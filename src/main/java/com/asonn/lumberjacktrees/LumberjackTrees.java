@@ -24,7 +24,7 @@ public class LumberjackTrees {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String MOD_ID = "lumberjacktrees";
-    public static final Tag <Item> AXES = new ItemTags.Wrapper(new ResourceLocation(MOD_ID, "axetags"));
+    private static final Tag <Item> AXES = new ItemTags.Wrapper(new ResourceLocation(MOD_ID, "axetags"));
 
     public LumberjackTrees() {
         MinecraftForge.EVENT_BUS.register(this);

@@ -1,5 +1,6 @@
 # Lubmerjack Trees
-Cut down whole trees and keep the stump intact.
+Cut down whole trees and keep the stump intact. Only work with vanilla axes. 
+At the moment a netherite_axe is not supported. Will be supported once 1.16 is released.
 
 The mod is made that it works for most tree mods (if they other modders append their logs to the minecraft log tags)
 So palm trees and the likes should be compatible.
