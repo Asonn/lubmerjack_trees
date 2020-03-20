@@ -78,8 +78,10 @@ public class LumberjackTrees {
     }
 
     private void dropItem(World worldIn, BlockPos pos, Block block) {
-        NonNullList <ItemStack> itemStack = NonNullList.create();
-        itemStack.add(new ItemStack(block.asItem()));
-        InventoryHelper.dropItems(worldIn, pos, itemStack);
+        if(!worldIn.isRemote()) {
+            NonNullList <ItemStack> itemStack = NonNullList.create();
+            itemStack.add(new ItemStack(block.asItem()));
+            InventoryHelper.dropItems(worldIn, pos, itemStack);
+        }
     }
 }
