@@ -1,4 +1,4 @@
-package com.example.lumberjacktrees;
+package com.asonn.lumberjacktrees;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryHelper;
@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod("lumberjacktrees")
 public class LumberjackTrees {
 
