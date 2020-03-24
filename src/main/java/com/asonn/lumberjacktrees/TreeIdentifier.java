@@ -49,12 +49,23 @@ public class TreeIdentifier {
     public void fromStump(BlockPos stump) {
         this.clear(); // Clear old data
 
-        // A linkedlist implements a queue, I'm too lazy to write a custom one
-        Queue<BlockPos> stumpPositions = new LinkedList<BlockPos>();
-        Queue<BlockPos> positions = new LinkedList<BlockPos>();
+        findStump(stump);
+        findTrunk(stump.offset(Direction.UP));
 
-        stumpPositions.add(stump);
-        positions.add(stump.offset(Direction.UP));
+        if (this.trunk.size() == this.tree.size()) {
+            // Clear as it is not a tree
+            this.clear();
+        }
+    }
+
+    public List<BlockPos> getTrunk() {
+        return this.trunk;
+    }
+
+    private void findStump(BlockPos start) {
+        Queue<BlockPos> stumpPositions = new LinkedList<BlockPos>();
+
+        stumpPositions.add(start);
 
         // Find the full stump, but stay on the same Y level, this is required for stumps the like 2x2 stump of the
         // Jungle tree
@@ -76,6 +87,12 @@ public class TreeIdentifier {
             }
 
         } while (stumpPositions.size() > 0);
+    }
+
+    private void findTrunk(BlockPos start) {
+        Queue<BlockPos> positions = new LinkedList<BlockPos>();
+
+        positions.add(start);
 
         // Find the rest of the tree
         do {
@@ -98,17 +115,6 @@ public class TreeIdentifier {
             }
 
         } while (positions.size() > 0);
-
-        if (this.trunk.size() == this.tree.size()) {
-            // Clear as it is not a tree
-            this.clear();
-        }
-
-        LOGGER.debug("Tree size: " + tree.size());
-    }
-
-    public List<BlockPos> getTrunk() {
-        return this.trunk;
     }
 
     private boolean isTreeBlock(BlockPos pos) {
