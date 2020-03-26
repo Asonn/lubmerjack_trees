@@ -7,36 +7,14 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class TreeIdentifier {
 
-    private class Node {
-        private Block block;
-        private BlockPos pos;
-
-        public Node(Block block, BlockPos blockPos) {
-            this.block = block;
-            this.pos = blockPos;
-        }
-
-        public Block getBlock() {
-            return block;
-        }
-
-        public BlockPos getPos() {
-            return pos;
-        }
-    }
-
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private World world;
-    private Map<BlockPos, Node> tree;
-    private List<BlockPos> trunk;
+    private Map <BlockPos, Node> tree;
+    private List <BlockPos> trunk;
 
     public TreeIdentifier(World world) {
         this.world = world;
@@ -58,12 +36,12 @@ public class TreeIdentifier {
         }
     }
 
-    public List<BlockPos> getTrunk() {
+    public List <BlockPos> getTrunk() {
         return this.trunk;
     }
 
     private void findStump(BlockPos start) {
-        Queue<BlockPos> stumpPositions = new LinkedList<BlockPos>();
+        Queue <BlockPos> stumpPositions = new LinkedList<>();
 
         stumpPositions.add(start);
 
@@ -80,7 +58,7 @@ public class TreeIdentifier {
                 for (int z = -1; z <= 1; z++) {
                     BlockPos newPos = currentPos.add(x, 0, z);
 
-                    if (!alreadyKnown(newPos) && isTreeBlock(newPos)) {
+                    if (unknownBlock(newPos) && isTreeBlock(newPos)) {
                         stumpPositions.add(newPos);
                     }
                 }
@@ -90,7 +68,7 @@ public class TreeIdentifier {
     }
 
     private void findTrunk(BlockPos start) {
-        Queue<BlockPos> positions = new LinkedList<BlockPos>();
+        Queue <BlockPos> positions = new LinkedList <BlockPos>();
 
         positions.add(start);
 
@@ -107,7 +85,7 @@ public class TreeIdentifier {
                     for (int z = -1; z <= 1; z++) {
                         BlockPos newPos = currentPos.add(x, y, z);
 
-                        if (!alreadyKnown(newPos) && isTreeBlock(newPos)) {
+                        if (unknownBlock(newPos) && isTreeBlock(newPos)) {
                             positions.add(newPos);
                         }
                     }
@@ -133,8 +111,8 @@ public class TreeIdentifier {
         return true;
     }
 
-    private boolean alreadyKnown(BlockPos pos) {
-        return this.tree.get(pos) != null;
+    private boolean unknownBlock(BlockPos pos) {
+        return this.tree.get(pos) == null;
     }
 
     private boolean isTreeLog(BlockState blockState) {
@@ -151,9 +129,28 @@ public class TreeIdentifier {
     }
 
     private void clear() {
-        this.trunk = new Vector<>();
+        this.trunk = new Vector <>();
         // Just use a HashMap, you can rewrite it to a more efficient map if it has performance issues
-        this.tree = new HashMap<>();
+        this.tree = new HashMap <>();
+    }
+
+
+    private static class Node {
+        private Block block;
+        private BlockPos pos;
+
+        Node(Block block, BlockPos blockPos) {
+            this.block = block;
+            this.pos = blockPos;
+        }
+
+        public Block getBlock() {
+            return block;
+        }
+
+        public BlockPos getPos() {
+            return pos;
+        }
     }
 
 }
