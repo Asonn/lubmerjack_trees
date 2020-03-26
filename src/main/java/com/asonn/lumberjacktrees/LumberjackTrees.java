@@ -1,6 +1,7 @@
 package com.asonn.lumberjacktrees;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,39 +43,21 @@ public class LumberjackTrees {
         World worldIn = event.getWorld().getWorld();
 
         if (playerHoldsAxeAndIsCuttingLogs(toolInstance, block)) {
-            BlockPos newPosition = pos.offset(Direction.UP);
-            removeIfSameBlockTypeIsConnected(worldIn, newPosition, block, pos);
+
+            TreeIdentifier tree = new TreeIdentifier(worldIn);
+            tree.fromStump(pos);
+
+            for (BlockPos logPos: tree.getTrunk()) {
+                Block logBlock = worldIn.getBlockState(logPos).getBlock();
+
+                worldIn.removeBlock(logPos, false);
+                dropItem(worldIn, logPos, logBlock);
+            }
         }
     }
 
     private boolean playerHoldsAxeAndIsCuttingLogs(ItemStack toolInstance, Block block) {
         return (!toolInstance.isEmpty() && AXES.contains(toolInstance.getItem()) && BlockTags.LOGS.contains(block));
-    }
-
-    private void removeIfSameBlockTypeIsConnected(World worldIn, BlockPos pos, Block block, BlockPos startPosition) {
-        if (worldIn.getBlockState(pos).getBlock().equals(block)) {
-            worldIn.removeBlock(pos, false);
-            dropItem(worldIn, pos, block);
-            goThroughNextPoints(worldIn, pos, block, startPosition);
-        }
-    }
-
-    private void goThroughNextPoints(World worldIn, BlockPos pos, Block block, BlockPos startPosition) {
-        if (isStump(pos, startPosition)) {
-            return;
-        }
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                for (int z = -1; z <= 1; z++) {
-                    BlockPos newPosition = pos.add(x, y, z);
-                    removeIfSameBlockTypeIsConnected(worldIn, newPosition, block, startPosition);
-                }
-            }
-        }
-    }
-
-    private boolean isStump(BlockPos pos, BlockPos startPosition) {
-        return pos.getY() <= startPosition.getY() && pos.getX() == startPosition.getX() && pos.getZ() == startPosition.getZ();
     }
 
     private void dropItem(World worldIn, BlockPos pos, Block block) {

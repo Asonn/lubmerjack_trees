@@ -1,4 +1,4 @@
-# Lubmerjack Trees
+# Lumberjack Trees
 Cut down whole trees and keep the stump intact. Only work with vanilla axes. 
 At the moment a netherite_axe is not supported. Will be supported once 1.16 is released.
 
